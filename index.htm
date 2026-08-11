@@ -140,10 +140,10 @@
       { id: 'san_telmo', nombre: 'San Telmo 750cc', precio: '$11.500', m: true, c: true },
       { id: 'cordero', nombre: 'Cordero con Piel de Lobo', precio: '$12.500', m: true, c: true },
       { id: 'callia', nombre: 'Callia 750cc', precio: '$12.500', m: true, c: true },
-      { id: 'los_arboles', nombre: 'Los Árboles 750cc', precio: '$12.500', m: true, c: true },
+      { id: 'los_arboles', nombre: 'Los Ãrboles 750cc', precio: '$12.500', m: true, c: true },
       { id: 'portillo', nombre: 'Portillo 750cc', precio: '$12.500', m: true, c: true },
       { id: 'elementos', nombre: 'Elementos 750cc', precio: '$13.500', m: true, c: true },
-      { id: 'gascon', nombre: 'Familia Gascón 750cc', precio: '$13.500', m: true, c: true },
+      { id: 'gascon', nombre: 'Familia GascÃ³n 750cc', precio: '$13.500', m: true, c: true },
       { id: 'latitud', nombre: 'Latitud 33 750cc', precio: '$13.500', m: true, c: true },
       { id: 'trumpeter', nombre: 'Trumpeter 750cc', precio: '$16.500', m: true, c: true }
     ];
@@ -262,19 +262,19 @@
 
       tintos.forEach(v => {
         if (v.m && v.c) {
-          textoHay += `• ${v.nombre} (Malbec y Cab.)\n`;
+          textoHay += `Â• ${v.nombre} (Malbec y Cab.)\n`;
           hayDisponibles = true;
         } else if (!v.m && !v.c) {
-          textoFaltantes += `• ${v.nombre} (Completamente agotado)\n`;
+          textoFaltantes += `Â• ${v.nombre} (Completamente agotado)\n`;
           hayFaltantes = true;
         } else if (v.m && !v.c) {
-          textoHay += `• ${v.nombre} (Solo queda Malbec)\n`;
-          textoFaltantes += `• ${v.nombre} (Falta Cabernet)\n`;
+          textoHay += `Â• ${v.nombre} (Solo queda Malbec)\n`;
+          textoFaltantes += `Â• ${v.nombre} (Falta Cabernet)\n`;
           hayDisponibles = true;
           hayFaltantes = true;
         } else if (!v.m && v.c) {
-          textoHay += `• ${v.nombre} (Solo queda Cabernet)\n`;
-          textoFaltantes += `• ${v.nombre} (Falta Malbec)\n`;
+          textoHay += `Â• ${v.nombre} (Solo queda Cabernet)\n`;
+          textoFaltantes += `Â• ${v.nombre} (Falta Malbec)\n`;
           hayDisponibles = true;
           hayFaltantes = true;
         }
@@ -282,10 +282,10 @@
 
       otros.forEach(o => {
         if (o.disp) {
-          textoHay += `• ${o.nombre}\n`;
+          textoHay += `Â• ${o.nombre}\n`;
           hayDisponibles = true;
         } else {
-          textoFaltantes += `• ${o.nombre}\n`;
+          textoFaltantes += `Â• ${o.nombre}\n`;
           hayFaltantes = true;
         }
       });
@@ -293,13 +293,13 @@
       if (hayDisponibles) {
         msg += textoHay + "\n";
       } else {
-        msg += "*? DISPONIBLES:*\n¡No hay nada en stock!\n\n";
+        msg += "*? DISPONIBLES:*\nÂ¡No hay nada en stock!\n\n";
       }
 
       if (hayFaltantes) {
         msg += textoFaltantes + "\n";
       } else {
-        msg += "*? AGOTADOS:*\n¡Nada, barra completa! ??\n\n";
+        msg += "*? AGOTADOS:*\nÂ¡Nada, barra completa! ??\n\n";
       }
       
       const hora = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
