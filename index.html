@@ -109,14 +109,14 @@
 <body>
 
   <div class="header">
-    <h1>?? Stock de Vinos</h1>
+    <h1>🍷 Stock de Vinos y Postres</h1>
     <p>Bellagamba - Control de Mozos</p>
   </div>
 
   <div class="container">
     <div class="controls">
-      <button class="btn-outline" onclick="setAll(true)">? Hay Todo</button>
-      <button class="btn-outline" onclick="setAll(false)">? Todo Agotado</button>
+      <button class="btn-outline" onclick="setAll(true)">✅ Hay Todo</button>
+      <button class="btn-outline" onclick="setAll(false)">❌ Todo Agotado</button>
     </div>
 
     <div class="section-title">Tintos 750cc</div>
@@ -124,6 +124,9 @@
 
     <div class="section-title">Copa, Blancos y Espumantes</div>
     <div id="otros-container"></div>
+
+    <div class="section-title">Postres</div>
+    <div id="postres-container"></div>
   </div>
 
   <div class="fab-container">
@@ -153,6 +156,24 @@
       { id: 'portillo_sauv', nombre: 'Portillo Sauv Blanc', precio: '$12.500', disp: true },
       { id: 'new_age', nombre: 'New Age 750cc', precio: '$13.500', disp: true },
       { id: 'navarro', nombre: 'Navarro Correas Extra Brut', precio: '$17.900', disp: true }
+    ];
+
+    const postres = [
+      { id: 'postre_bellagamba', nombre: 'Postre Bellagamba', precio: '$6.500', disp: true },
+      { id: 'frutillas_crema', nombre: 'Frutillas con crema', precio: '$4.500', disp: true },
+      { id: 'ensalada_frutas', nombre: 'Ensalada de frutas', precio: '$4.200', disp: true },
+      { id: 'mousse_chocolate', nombre: 'Mousse de chocolate', precio: '$4.500', disp: true },
+      { id: 'pavlova', nombre: 'Pavlova', precio: '$4.800', disp: true },
+      { id: 'cheesecake_frutos', nombre: 'Chessecake de frutos rojos', precio: '$4.700', disp: true },
+      { id: 'tiramisu', nombre: 'Tiramisu', precio: '$4.500', disp: true },
+      { id: 'tiramisu_frutos', nombre: 'Tiramisu de frutos rojos', precio: '$4.800', disp: true },
+      { id: 'lemon_pie', nombre: 'Lemon pie', precio: '$4.500', disp: true },
+      { id: 'flan_casero', nombre: 'Flan casero', precio: '$3.900', disp: true },
+      { id: 'budin_pan', nombre: 'Budin de pan', precio: '$3.900', disp: true },
+      { id: 'tarantela', nombre: 'Tarantela', precio: '$3.900', disp: true },
+      { id: 'brownie_helado', nombre: 'Brownie con helado', precio: '$4.800', disp: true },
+      { id: 'bocha_helado', nombre: 'Bocha de helado', precio: '$2.500', disp: true },
+      { id: 'chocotorta', nombre: 'Chocotorta', precio: '$4.500', disp: true }
     ];
 
     function createCardBase(vino) {
@@ -222,9 +243,11 @@
     function renderUI() {
       const tContainer = document.getElementById('tintos-container');
       const oContainer = document.getElementById('otros-container');
+      const pContainer = document.getElementById('postres-container');
       
       tContainer.innerHTML = '';
       oContainer.innerHTML = '';
+      pContainer.innerHTML = '';
       
       tintos.forEach((vino, index) => {
         const card = createCardBase(vino);
@@ -242,39 +265,47 @@
         card.appendChild(toggleDisp);
         oContainer.appendChild(card);
       });
+
+      postres.forEach((postre, index) => {
+        const card = createCardBase(postre);
+        const toggleDisp = createToggle('Disponibilidad', postre.disp, (val) => { postres[index].disp = val; });
+        card.appendChild(toggleDisp);
+        pContainer.appendChild(card);
+      });
     }
 
     function setAll(status) {
       tintos.forEach(v => { v.m = status; v.c = status; });
       otros.forEach(v => { v.disp = status; });
+      postres.forEach(p => { p.disp = status; });
       renderUI();
     }
 
     function enviarWA() {
-      let msg = "*?? REPORTE DE STOCK DE VINOS ??*\n";
-      msg += "-------------------\n\n";
+      let msg = "*🚨 REPORTE DE STOCK 🚨*\n";
+      msg += "───────────────────\n\n";
 
-      let textoHay = "*? DISPONIBLES:*\n";
-      let textoFaltantes = "*? AGOTADOS:*\n";
+      let textoHay = "*✅ DISPONIBLES:*\n";
+      let textoFaltantes = "*❌ AGOTADOS:*\n";
       
       let hayDisponibles = false;
       let hayFaltantes = false;
 
       tintos.forEach(v => {
         if (v.m && v.c) {
-          textoHay += ` ${v.nombre} (Malbec y Cab.)\n`;
+          textoHay += `• ${v.nombre} (Malbec y Cab.)\n`;
           hayDisponibles = true;
         } else if (!v.m && !v.c) {
-          textoFaltantes += ` ${v.nombre} (Completamente agotado)\n`;
+          textoFaltantes += `• ${v.nombre} (Completamente agotado)\n`;
           hayFaltantes = true;
         } else if (v.m && !v.c) {
-          textoHay += ` ${v.nombre} (Solo queda Malbec)\n`;
-          textoFaltantes += ` ${v.nombre} (Falta Cabernet)\n`;
+          textoHay += `• ${v.nombre} (Solo queda Malbec)\n`;
+          textoFaltantes += `• ${v.nombre} (Falta Cabernet)\n`;
           hayDisponibles = true;
           hayFaltantes = true;
         } else if (!v.m && v.c) {
-          textoHay += ` ${v.nombre} (Solo queda Cabernet)\n`;
-          textoFaltantes += ` ${v.nombre} (Falta Malbec)\n`;
+          textoHay += `• ${v.nombre} (Solo queda Cabernet)\n`;
+          textoFaltantes += `• ${v.nombre} (Falta Malbec)\n`;
           hayDisponibles = true;
           hayFaltantes = true;
         }
@@ -282,10 +313,20 @@
 
       otros.forEach(o => {
         if (o.disp) {
-          textoHay += ` ${o.nombre}\n`;
+          textoHay += `• ${o.nombre}\n`;
           hayDisponibles = true;
         } else {
-          textoFaltantes += ` ${o.nombre}\n`;
+          textoFaltantes += `• ${o.nombre}\n`;
+          hayFaltantes = true;
+        }
+      });
+
+      postres.forEach(p => {
+        if (p.disp) {
+          textoHay += `• ${p.nombre}\n`;
+          hayDisponibles = true;
+        } else {
+          textoFaltantes += `• ${p.nombre}\n`;
           hayFaltantes = true;
         }
       });
@@ -293,13 +334,13 @@
       if (hayDisponibles) {
         msg += textoHay + "\n";
       } else {
-        msg += "*? DISPONIBLES:*\n¡No hay nada en stock!\n\n";
+        msg += "*✅ DISPONIBLES:*\n¡No hay nada en stock!\n\n";
       }
 
       if (hayFaltantes) {
         msg += textoFaltantes + "\n";
       } else {
-        msg += "*? AGOTADOS:*\n¡Nada, barra completa! ??\n\n";
+        msg += "*❌ AGOTADOS:*\n¡Nada, barra completa! 🥳\n\n";
       }
       
       const hora = new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
